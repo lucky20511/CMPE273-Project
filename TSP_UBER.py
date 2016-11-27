@@ -313,14 +313,10 @@ def run_uber(input_coord):
         #ydiff = -122.405 - -122.441
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-<<<<<<< HEAD:TSP.py
-        coord = [(1,0),(4,4),(2,0),(8,0)]
-        
-=======
+
         #coord = [(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)]
         coord = input_coord
 
->>>>>>> 66a3c0afc5122ff01005831d8c51b1afdbbc6bca:TSP_UBER.py
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
     else:

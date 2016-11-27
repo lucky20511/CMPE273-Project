@@ -324,14 +324,10 @@ def run_lyft(input_coord):
     if len(sys.argv) == 1:
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-<<<<<<< Updated upstream:TSP_LYFT.py
+
 
         #coord = [(37.71,-122.41),(37.72,-122.41),(37.75,-122.41),(37.79,-122.41)]
         coord = input_coord
-        
-=======
-        coord = [(1,0),(4,4),(7,0),(8,0)]
->>>>>>> Stashed changes:TSP.py
 
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
@@ -378,7 +374,5 @@ def run_lyft(input_coord):
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
-<<<<<<< Updated upstream:TSP_LYFT.py
+
     return final_result(coord, tour)
-=======
->>>>>>> Stashed changes:TSP.py
