@@ -29,7 +29,7 @@ def uber(start_x, start_y, end_x, end_y):
 
     #cheap_uber = estimate[0];
     price_uber = (estimate[0]['high_estimate'] + estimate[0]['low_estimate']) / 2
-    currency_uber = estimate[0]['currency_code']
+    currency_uber = json.dumps(estimate[0]['currency_code'])
     duration_uber = estimate[0]['duration'] / 60
     distance_uber = estimate[0]['distance']
 
@@ -42,6 +42,5 @@ def uber(start_x, start_y, end_x, end_y):
             "total_distance" : distance_uber,
             "distance_unit": "mile"
     }
-
     return res
-    #print res
+        #print res
