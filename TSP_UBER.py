@@ -1,7 +1,8 @@
 import math
 import random
-import lyft_function
 import json
+from uber_price import uber
+
 def distL2((x1,y1), (x2,y2)):
     """Compute the L2-norm (Euclidean) distance between two points.
 
@@ -10,28 +11,14 @@ def distL2((x1,y1), (x2,y2)):
 
     The two points are located on coordinates (x1,y1) and (x2,y2),
     sent as parameters"""
-    ans = json.loads(lyft_function.given_cost([x1,y1],[x2,y2]))
-    return ans['cost']
-def final_result(coord, tour_list):
-    n = len(tour_list)
-    total_costs_by_cheapest_car_type = 0
-    total_duration = 0
-    total_distance = 0
-    result = {}
-    for i in range(0, n-1):
-        for j in range(i+1, n):
-            ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[j]]))
-            total_costs_by_cheapest_car_type += ans['cost']
-            total_duration += ans['duration']
-            total_distance += ans['distance']
-    result['total_costs_by_cheapest_car_type'] = total_costs_by_cheapest_car_type
-    result['total_duration'] = total_duration
-    result['total_distance'] = total_distance
-    result['distance_unite'] = 'mile'
-    result['duration_unite'] = 'minute'
-    result['current_code'] = 'USD'
-    result['name'] = 'Lyft'
-    return result   
+    #xdiff = 37.791 - 37.770
+    #ydiff = -122.405 - -122.441
+    #return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
+    u = uber(x1,y1,x2,y2)
+    #print u
+    dist = u['total_distance']
+    #print dist
+    return dist
 
 def distL1((x1,y1), (x2,y2)):
     """Compute the L1-norm (Manhattan) distance between two points.
@@ -312,7 +299,7 @@ def multistart_localsearch(k, n, D, report=None):
     return bestt, bestz
 
 
-def run_lyft(input_coord):
+def run_uber(input_coord):
     """Local search for the Travelling Saleman Problem: sample usage."""
 
     #
@@ -322,16 +309,12 @@ def run_lyft(input_coord):
     # random.seed(1)    # uncomment for having always the same behavior
     import sys
     if len(sys.argv) == 1:
+        #xdiff = 37.791 - 37.770
+        #ydiff = -122.405 - -122.441
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-<<<<<<< Updated upstream:TSP_LYFT.py
-
-        #coord = [(37.71,-122.41),(37.72,-122.41),(37.75,-122.41),(37.79,-122.41)]
+        #coord = [(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)]
         coord = input_coord
-        
-=======
-        coord = [(1,0),(4,4),(7,0),(8,0)]
->>>>>>> Stashed changes:TSP.py
 
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
@@ -378,7 +361,12 @@ def run_lyft(input_coord):
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
-<<<<<<< Updated upstream:TSP_LYFT.py
-    return final_result(coord, tour)
-=======
->>>>>>> Stashed changes:TSP.py
+    res = uber(coord[tour[0]][0],coord[tour[0]][1],coord[tour[1]][0],coord[tour[1]][1])
+    for i in range(1, len(tour)-1):
+        temp = uber(coord[tour[i]][0],coord[tour[i]][1],coord[tour[i+1]][0],coord[tour[i+1]][1])
+        res['total_duration'] += temp['total_duration']
+        res['total_costs_by_cheapest_car_type'] += temp['total_costs_by_cheapest_car_type']
+        res['total_distance'] += temp['total_distance']
+        #{'name': 'Uber', 'total_duration': 15.0, 'duration_unit': 'minute', 'distance_unit': 'mile', 'total_costs_by_cheapest_car_type': 3.5, 'total_distance': 3.42, 'currency_code': '"USD"'}
+    #res['currency_code'] = json.loads(res['currency_code'])
+    return res
