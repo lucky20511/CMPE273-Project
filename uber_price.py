@@ -29,7 +29,7 @@ def uber((start_x, start_y), (end_x, end_y)):
 
     #cheap_uber = estimate[0];
     price_uber = (estimate[0]['high_estimate'] + estimate[0]['low_estimate']) / 2.0
-    currency_uber = json.dumps(estimate[0]['currency_code'])
+    currency_uber = estimate[0]['currency_code'].encode('raw_unicode_escape')
     duration_uber = estimate[0]['duration'] / 60.0
     distance_uber = estimate[0]['distance']
 
