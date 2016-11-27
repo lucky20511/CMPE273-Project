@@ -4,7 +4,7 @@ from flask import Flask, request, Response, json, abort
 from sqlalchemy import *
 import requests
 import re
-
+from TSP import *
 
 #from flask_sqlalchemy import SQLAlchemy
 
@@ -243,7 +243,7 @@ def trip_POST():
 
 
 
-        
+        run()
 
 
 
