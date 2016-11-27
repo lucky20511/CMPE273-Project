@@ -1,6 +1,7 @@
 import math
 import random
-
+import json
+from uber_price import uber
 
 def distL2((x1,y1), (x2,y2)):
     """Compute the L2-norm (Euclidean) distance between two points.
@@ -10,10 +11,14 @@ def distL2((x1,y1), (x2,y2)):
 
     The two points are located on coordinates (x1,y1) and (x2,y2),
     sent as parameters"""
-    xdiff = x2 - x1
-    ydiff = y2 - y1
-    return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
-
+    #xdiff = 37.791 - 37.770
+    #ydiff = -122.405 - -122.441
+    #return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
+    u = uber(x1,y1,x2,y2)
+    #print u
+    dist = u['total_distance']
+    #print dist
+    return dist
 
 def distL1((x1,y1), (x2,y2)):
     """Compute the L1-norm (Manhattan) distance between two points.
@@ -51,11 +56,11 @@ def mk_matrix(coord, dist):
                 D[j,i] = D[i,j]
                 print "x1="+str(x1)+" y1="+str(y1)+" x2="+str(x2)+" y2="+str(y2) +" D="+str(D[i,j])
 
-            # if(i != 0 and j != n-1):    
+            # if(i != 0 and j != n-1):
             #     D[j,i] = D[i,j]
             # else:
             #     D[j,i] = 9000000
-            
+
 
     return n,D
 
@@ -294,7 +299,7 @@ def multistart_localsearch(k, n, D, report=None):
     return bestt, bestz
 
 
-def run():
+def run_uber(input_coord):
     """Local search for the Travelling Saleman Problem: sample usage."""
 
     #
@@ -304,10 +309,18 @@ def run():
     # random.seed(1)    # uncomment for having always the same behavior
     import sys
     if len(sys.argv) == 1:
+        #xdiff = 37.791 - 37.770
+        #ydiff = -122.405 - -122.441
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
+<<<<<<< HEAD:TSP.py
         coord = [(1,0),(4,4),(2,0),(8,0)]
         
+=======
+        #coord = [(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)]
+        coord = input_coord
+
+>>>>>>> 66a3c0afc5122ff01005831d8c51b1afdbbc6bca:TSP_UBER.py
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
     else:
@@ -330,7 +343,7 @@ def run():
     print "random construction + local search:"
     tour = randtour(n)     # create a random tour
     z = length(tour, D)     # calculate its length
-    print "random:", tour, z, '  -->  ',   
+    print "random:", tour, z, '  -->  ',
     z = localsearch(tour, z, D)      # local search starting from the random tour
     print tour, z
     print
@@ -353,3 +366,12 @@ def run():
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
+    res = uber(coord[tour[0]][0],coord[tour[0]][1],coord[tour[1]][0],coord[tour[1]][1])
+    for i in range(1, len(tour)-1):
+        temp = uber(coord[tour[i]][0],coord[tour[i]][1],coord[tour[i+1]][0],coord[tour[i+1]][1])
+        res['total_duration'] += temp['total_duration']
+        res['total_costs_by_cheapest_car_type'] += temp['total_costs_by_cheapest_car_type']
+        res['total_distance'] += temp['total_distance']
+        #{'name': 'Uber', 'total_duration': 15.0, 'duration_unit': 'minute', 'distance_unit': 'mile', 'total_costs_by_cheapest_car_type': 3.5, 'total_distance': 3.42, 'currency_code': '"USD"'}
+    #res['currency_code'] = json.loads(res['currency_code'])
+    return res
