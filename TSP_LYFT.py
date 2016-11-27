@@ -1,7 +1,7 @@
 import math
 import random
-
-
+import lyft_function
+import json
 def distL2((x1,y1), (x2,y2)):
     """Compute the L2-norm (Euclidean) distance between two points.
 
@@ -10,10 +10,28 @@ def distL2((x1,y1), (x2,y2)):
 
     The two points are located on coordinates (x1,y1) and (x2,y2),
     sent as parameters"""
-    xdiff = x2 - x1
-    ydiff = y2 - y1
-    return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
-
+    ans = json.loads(lyft_function.given_cost([x1,y1],[x2,y2]))
+    return ans['cost']
+def final_result(coord, tour_list):
+    n = len(tour_list)
+    total_costs_by_cheapest_car_type = 0
+    total_duration = 0
+    total_distance = 0
+    result = {}
+    for i in range(0, n-1):
+        for j in range(i+1, n):
+            ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[j]]))
+            total_costs_by_cheapest_car_type += ans['cost']
+            total_duration += ans['duration']
+            total_distance += ans['distance']
+    result['total_costs_by_cheapest_car_type'] = total_costs_by_cheapest_car_type
+    result['total_duration'] = total_duration
+    result['total_distance'] = total_distance
+    result['distance_unite'] = 'mile'
+    result['duration_unite'] = 'minute'
+    result['current_code'] = 'USD'
+    result['name'] = 'Lyft'
+    return result   
 
 def distL1((x1,y1), (x2,y2)):
     """Compute the L1-norm (Manhattan) distance between two points.
@@ -294,7 +312,7 @@ def multistart_localsearch(k, n, D, report=None):
     return bestt, bestz
 
 
-def run():
+def run_lyft(input_coord):
     """Local search for the Travelling Saleman Problem: sample usage."""
 
     #
@@ -306,8 +324,11 @@ def run():
     if len(sys.argv) == 1:
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-        coord = [(1,0),(4,4),(7,0),(8,0)]
+
+        #coord = [(37.71,-122.41),(37.72,-122.41),(37.75,-122.41),(37.79,-122.41)]
+        coord = input_coord
         
+
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
     else:
@@ -353,3 +374,4 @@ def run():
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
+    return final_result(coord, tour)
