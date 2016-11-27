@@ -242,10 +242,20 @@ def trip_POST():
             print mid_coordinate[i]['lng']
 
 
+        #for i in range(0, )
+
+        coord = []
+        coord.append((start_coordinate[0]['lat'], start_coordinate[0]['lng']))
+        for i in range(0, len(mid_coordinate)):
+            coord.append((mid_coordinate[i]['lat'], mid_coordinate[i]['lng']))    
+        coord.append((end_coordinate[0]['lat'], end_coordinate[0]['lng'])) 
+
+        print "======"
+        print coord
 
         run()
 
-
+        
 
 
         resp = Response("", status=201, mimetype='application/json')

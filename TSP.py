@@ -306,7 +306,7 @@ def run():
     if len(sys.argv) == 1:
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-        coord = [(1,0),(4,4),(7,0),(8,0)]
+        coord = [(1,0),(4,4),(2,0),(8,0)]
         
         n, D = mk_matrix(coord, distL2) # create the distance matrix
         instance = "toy problem"
