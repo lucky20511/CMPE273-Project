@@ -14,7 +14,7 @@ def distL2((x1,y1), (x2,y2)):
     #xdiff = 37.791 - 37.770
     #ydiff = -122.405 - -122.441
     #return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
-    u = uber(x1,y1,x2,y2)
+    u = uber((x1,y1),(x2,y2))
     #print u
     dist = u['total_distance']
     #print dist
@@ -313,7 +313,6 @@ def run_uber(input_coord):
         #ydiff = -122.405 - -122.441
         # create a graph with several cities' coordinates
         #coord = [(4,0),(5,6),(8,3),(4,4),(4,1),(4,3),(2,7),(6,8),(3,1)]
-
         #coord = [(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)]
         coord = input_coord
 
@@ -362,9 +361,9 @@ def run_uber(input_coord):
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
-    res = uber(coord[tour[0]][0],coord[tour[0]][1],coord[tour[1]][0],coord[tour[1]][1])
+    res = uber((coord[0][0],coord[0][1]),(coord[0][0],coord[0][1]))
     for i in range(1, len(tour)-1):
-        temp = uber(coord[tour[i]][0],coord[tour[i]][1],coord[tour[i+1]][0],coord[tour[i+1]][1])
+        temp = uber((coord[tour[i]][0],coord[tour[i]][1]),(coord[tour[i+1]][0],coord[tour[i+1]][1]))
         res['total_duration'] += temp['total_duration']
         res['total_costs_by_cheapest_car_type'] += temp['total_costs_by_cheapest_car_type']
         res['total_distance'] += temp['total_distance']
