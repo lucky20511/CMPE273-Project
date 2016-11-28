@@ -4,8 +4,8 @@ from flask import Flask, request, Response, json, abort
 from sqlalchemy import *
 import requests
 import re
-from TSP import *
-
+from TSP_LYFT import *
+from TSP_UBER import *
 #from flask_sqlalchemy import SQLAlchemy
 
 
@@ -242,10 +242,21 @@ def trip_POST():
             print mid_coordinate[i]['lng']
 
 
+        #for i in range(0, )
 
-        run()
+        coord = []
+        coord.append((start_coordinate[0]['lat'], start_coordinate[0]['lng']))
+        for i in range(0, len(mid_coordinate)):
+            coord.append((mid_coordinate[i]['lat'], mid_coordinate[i]['lng']))    
+        coord.append((end_coordinate[0]['lat'], end_coordinate[0]['lng'])) 
 
+        print "======"
+        print coord
 
+        result_uber = run_uber(coord)
+        result_lyft = run_lyft(coord)
+
+        print {"provider": [result_uber, result_lyft]}
 
 
         resp = Response("", status=201, mimetype='application/json')
