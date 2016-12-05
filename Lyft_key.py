@@ -11,7 +11,8 @@ def get_new_lyft_key():
     post_data = json.dumps({"grant_type": "client_credentials", "scope": "public"})
     c.setopt(c.POSTFIELDS, post_data)
     c.setopt(c.HTTPHEADER, ['Content-Type: application/json'])
-    c.setopt(pycurl.USERPWD, '%s:%s' % ('DR0wVgWATSHH', 'T0dzP3n7b_-B5ql-GyGDt3AoeY_Xd22X'))
+    #please notice here from Miao, I hide the ID/KEY
+    c.setopt(pycurl.USERPWD, '%s:%s' % ('please-ask-me', 'please-ask-me-again'))
     c.setopt(c.WRITEDATA, ans)
     
     c.perform()   

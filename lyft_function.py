@@ -12,13 +12,20 @@ def given_cost(from_p, to_p):
 #    url = 'https://api.lyft.com/v1/cost?start_lat='+str(37.77+start[0]/100.0)+'&start_lng='+str(-122.41+start[1]/100.0)+ '&end_lat=' + str(37.77+end[0]/100.0) + '&end_lng='+ str(-122.41+end[1]/100.0)
     url = 'https://api.lyft.com/v1/cost?start_lat='+str(start[0])+'&start_lng='+str(start[1])+ '&end_lat=' + str(end[0]) + '&end_lng='+ str(end[1])
     c.setopt(c.URL, url)
-    c.setopt(c.HTTPHEADER, ['Accept: application/json','Authorization: bearer gAAAAABYOe3cIxMYsBwHUhWcIUGy2RLnJ5SEVoOtsa3m6UAcHWdvhZFmFZLxgbLqO7Gpde5nzB9LAkmdJWf5L53tnzspwWirGZGi_8dgmJ2Yrm__Q40aGxWt-z0ZBOtnYE_hhGSahTjQunHOk-YlX99vthacuyEm_eg7KuAxezem-xWN8zQQaFEaMJg9wMa_hG6oTvU0_C1c0dQSAkxjw8LxrrG_knIdng=='])
+    c.setopt(c.HTTPHEADER, ['Accept: application/json','Authorization: bearer gAAAAABYPAWh08lk7SZizmS6lzkDN7ARrD-UqMaTb9JodjkoVZ_u2xLR9QKMejdv-B5SrK528l0Q6LUBTLWTB5UXiwU4v6EKoRhUzwdZC6Ytta7USr8AidYBIcKS0MyOXheWTeB5goc_2nIBwaxG2RJAr1CaJdScP0X-tkwWtz-w1ne18qCd0qEVvNztuhyp-xhP6_PpON5s3N51_Z-RykN0KcSZXztvmA=='])
     c.setopt(c.WRITEDATA, ans)
     c.perform()   
     result = json.loads(ans.getvalue())
     #print result
-    lists = result['cost_estimates']
     new_ans={}
+    if 'error_description' in result.keys():
+        #lyft out for sercvice, so set max float value to support run
+        new_ans['cost'] = 100000.0
+        new_ans['duration'] = 100000.0
+        new_ans['distance'] = 100000.0
+        c.close()
+        return json.dumps(new_ans)
+    lists = result['cost_estimates']
     for item in lists:
         #if item['ride_type'] == 'lyft_line':
         if item['ride_type'] == 'lyft_line':
