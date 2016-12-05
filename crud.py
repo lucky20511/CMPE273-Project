@@ -253,13 +253,20 @@ def trip_POST():
         print "======"
         print coord
 
-        result_uber = run_uber(coord)
-        result_lyft = run_lyft(coord)
+        #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)])
+        result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
+        result_lyft = run_lyft([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
 
-        print {"provider": [result_uber, result_lyft]}
+        print {"provider" : [result_uber, result_lyft]}
+        
+        #js = {"provider" : [result_uber, run_lyft]}
+
+        js = ""
+        #js = json.dumps(js)
+        #print {"provider": [result_uber, result_lyft]}
 
 
-        resp = Response("", status=201, mimetype='application/json')
+        resp = Response(js, status=201, mimetype='application/json')
 
         return resp
 
