@@ -252,14 +252,29 @@ def trip_POST():
 
         #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)])
         #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
-        result_uber = run_uber(coord)
+        (result_uber, uber_tour) = run_uber(coord)
         
-        result_lyft = run_lyft(coord)
-        print {"provider" : [result_uber, result_lyft]}
+        (result_lyft, lyft_tour) = run_lyft(coord)
+        #start_place
+        #end_place
+        print uber_tour
+        uber_mid_array = []
+        for i in range(1,len(uber_tour)-1):
+            uber_mid_array.append(mid_place[i-1])
+        Uber_best = {"UBER":{"start":start_place, "end":end_place, "mid":uber_mid_array}}    
+
+        print lyft_tour
+        lyft_mid_array = []
+        for i in range(1,len(lyft_tour)-1):
+            lyft_mid_array.append(mid_place[i-1])
+        Lyft_best = {"LYFT":{"start":start_place, "end":end_place, "mid":lyft_mid_array}}    
+
+
+        print {"provider" : [result_uber, result_lyft], "best_route_by_costs":[Uber_best, Lyft_best]}
         
         #js = {"provider" : [result_uber, run_lyft]}
-
-        js = {"provider" : [result_uber, result_lyft]}
+        #print lyft_tour
+        js = {"provider" : [result_uber, result_lyft], "best_route_by_costs":[Uber_best, Lyft_best]}
         #js = json.dumps(js)
         #print {"provider": [result_uber, result_lyft]}
         #print "======tour_uber======"

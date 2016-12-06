@@ -378,4 +378,4 @@ def run_lyft(input_coord):
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
 
-    return final_result(coord, tour)
+    return (final_result(coord, tour), tour)
