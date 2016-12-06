@@ -12,9 +12,14 @@ def get_new_lyft_key():
     c.setopt(c.POSTFIELDS, post_data)
     c.setopt(c.HTTPHEADER, ['Content-Type: application/json'])
     #please notice here from Miao, I hide the ID/KEY
-    c.setopt(pycurl.USERPWD, '%s:%s' % ('please-ask-me', 'please-ask-me-again'))
+    c.setopt(pycurl.USERPWD, '%s:%s' % ('DR0wVgWATSHH', 'T0dzP3n7b_-B5ql-GyGDt3AoeY_Xd22X'))
     c.setopt(c.WRITEDATA, ans)
     
     c.perform()   
     result = json.loads(ans.getvalue())
+    #print "======================"
+    #print result
+
+
+
     return result['access_token']

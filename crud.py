@@ -46,18 +46,13 @@ def api_GET_PUT_DELETE(postID):
     if request.method == 'GET':
 
         sql = "SELECT * FROM 273PROJECT WHERE id='%d' " %postID
-        #print sql
+
         result = db.engine.execute(sql)
 
         dic = [(dict(row.items())) for row in result]
-        #check if the id is valid
-        #print "!!!!!!%d"%len(dic)
+
         if len(dic) < 1: 
             abort(404)   
-            #return Response(status=200, mimetype='application/json')
-        #print dic[0]    
-        #js = json.dumps(dic[0])
-        #print js
 
 
         resp = Response(wrapUpJSON(dic[0]), status=200, mimetype='application/json')
@@ -114,12 +109,14 @@ def api_POST():
   
 
         key = "AIzaSyDKhnvZjbr8lthcJs4BXDWYqEpwiu6uvu0"
-        address = "1314 dryden drive"
-        google_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" %(key, "mountainview")
+        address = resp_dict["address"] + resp_dict["city"] + resp_dict["state"] + resp_dict["zip"]
+        google_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" %(key, address)
 
         r = requests.get(google_api_url)
         
         google_ret = json.loads(r.text)
+
+        print r.text
 
         #print str(google_ret['results'][0]['geometry']['location']['lat']) +"\n";
         #print str(google_ret['results'][0]['geometry']['location']['lng']) +"\n";
@@ -254,19 +251,25 @@ def trip_POST():
         print coord
 
         #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)])
-        result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
-        result_lyft = run_lyft([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
-
+        #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
+        result_uber = run_uber(coord)
+        
+        result_lyft = run_lyft(coord)
         print {"provider" : [result_uber, result_lyft]}
         
         #js = {"provider" : [result_uber, run_lyft]}
 
-        js = ""
+        js = {"provider" : [result_uber, result_lyft]}
         #js = json.dumps(js)
         #print {"provider": [result_uber, result_lyft]}
+        #print "======tour_uber======"
+        #print tour_uber
+        #print "======tour_lyft======"
+        #print tour_lyft
 
 
-        resp = Response(js, status=201, mimetype='application/json')
+
+        resp = Response(json.dumps(js), status=201, mimetype='application/json')
 
         return resp
 

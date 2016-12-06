@@ -360,13 +360,28 @@ def run_uber(input_coord):
     tour,z = multistart_localsearch(niter, n, D, report_sol)
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
-    print tour
+    
+    print tour[0:len(tour)]
+
     res = uber((coord[0][0],coord[0][1]),(coord[0][0],coord[0][1]))
-    for i in range(1, len(tour)-1):
+    for i in range(0, len(tour)-1):
+        print "----------------------"
+        
+        #print tour[i]
         temp = uber((coord[tour[i]][0],coord[tour[i]][1]),(coord[tour[i+1]][0],coord[tour[i+1]][1]))
+        
+
+        print "=====" + str(i)+str(i+1) + "====="
+        print (coord[tour[i]][0],coord[tour[i]][1])
+        print (coord[tour[i+1]][0],coord[tour[i+1]][1])
+        print temp
         res['total_duration'] += temp['total_duration']
         res['total_costs_by_cheapest_car_type'] += temp['total_costs_by_cheapest_car_type']
         res['total_distance'] += temp['total_distance']
         #{'name': 'Uber', 'total_duration': 15.0, 'duration_unit': 'minute', 'distance_unit': 'mile', 'total_costs_by_cheapest_car_type': 3.5, 'total_distance': 3.42, 'currency_code': '"USD"'}
     #res['currency_code'] = json.loads(res['currency_code'])
+
+    print "$$$$$$$$$$$"
+    print res
+
     return res

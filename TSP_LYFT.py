@@ -19,16 +19,19 @@ def final_result(coord, tour_list):
     total_distance = 0
     result = {}
     for i in range(0, n-1):
-        for j in range(i+1, n):
-            ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[j]]))
-            total_costs_by_cheapest_car_type += ans['cost']
-            total_duration += ans['duration']
-            total_distance += ans['distance']
+        ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[i+1]]))
+        print "=====" + str(i)+str(i+1) + "====="
+        print (coord[tour_list[i]][0],coord[tour_list[i]][1])
+        print (coord[tour_list[i+1]][0],coord[tour_list[i+1]][1])
+        print ans
+        total_costs_by_cheapest_car_type += ans['cost']
+        total_duration += ans['duration']
+        total_distance += ans['distance']
     result['total_costs_by_cheapest_car_type'] = total_costs_by_cheapest_car_type
     result['total_duration'] = total_duration
     result['total_distance'] = total_distance
-    result['distance_unite'] = 'mile'
-    result['duration_unite'] = 'minute'
+    result['distance_unit'] = 'mile'
+    result['duration_unit'] = 'minute'
     result['current_code'] = 'USD'
     result['name'] = 'Lyft'
     return result   

@@ -24,8 +24,13 @@ def uber((start_x, start_y), (end_x, end_y)):
         end_longitude=end_y,
         seat_count=1
     )
-
+    print "QQQQQQQ"
+    print (start_x, start_y)
+    print (end_x, end_y)
+    
     estimate = response.json.get('prices')
+    print "XXXXXXXXXXX"
+    print estimate
 
     #cheap_uber = estimate[0];
     price_uber = (estimate[0]['high_estimate'] + estimate[0]['low_estimate']) / 2.0
