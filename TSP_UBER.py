@@ -14,6 +14,8 @@ def distL2((x1,y1), (x2,y2)):
     #xdiff = 37.791 - 37.770
     #ydiff = -122.405 - -122.441
     #return (math.sqrt(xdiff*xdiff + ydiff*ydiff))
+    #print "x1="+str(x1)+" y1="+str(y1)+" x2="+str(x2)+" y2="+str(y2)
+
     u = uber((x1,y1),(x2,y2))
     #print u
     dist = u['total_distance']
@@ -54,8 +56,7 @@ def mk_matrix(coord, dist):
             else:
                 D[i,j] = dist((x1,y1), (x2,y2))
                 D[j,i] = D[i,j]
-                print "x1="+str(x1)+" y1="+str(y1)+" x2="+str(x2)+" y2="+str(y2) +" D="+str(D[i,j])
-
+                
             # if(i != 0 and j != n-1):
             #     D[j,i] = D[i,j]
             # else:
@@ -123,11 +124,11 @@ def randtour(n):
     """Construct a random tour of size 'n'."""
     sol = range(1,n-1)      # set solution equal to [0,1,...,n-1]
     random.shuffle(sol) # place it in a random order
-    print sol
+    #print sol
     ls = [0]
 
 
-    print ls + sol + [n-1]
+    #print ls + sol + [n-1]
     return ls + sol + [n-1]
 
 
@@ -215,10 +216,18 @@ def improve(tour, z, D, C):
     tinv = [0 for i in tour]
     for k in range(n):
         tinv[tour[k]] = k  # position of each city in 't'
+    
+    # print "!!!!!!!!!!!!!"
+    # print C
+    # print tinv
+    # print tour
+    # print "?????????????"
     for i in range(1,n-2):
         a,b = tour[i],tour[(i)%(n-2)+1]
         #print "i="+str(i)+" n="+str(n)+" a="+str(i) + " b="+str((i)%(n-2)+1)
-
+        #print "!!!!!!!!!!!!!"
+        #print a,b
+        #print "?????????????"
         dist_ab = D[a,b]
         improved = False
         for dist_ac,c in C[a]:
@@ -234,8 +243,10 @@ def improve(tour, z, D, C):
                 z += delta
                 improved = True
                 break
+        
         if improved:
             continue
+
         for dist_bd,d in C[b]:
             if dist_bd >= dist_ab:
                 break
@@ -331,57 +342,58 @@ def run_uber(input_coord):
               (clock(), obj, s)
 
 
-    print "*** travelling salesman problem ***"
-    print
+    #print "*** travelling salesman problem ***"
+    #print
 
-    # random construction
-    print "random construction + local search:"
-    tour = randtour(n)     # create a random tour
-    z = length(tour, D)     # calculate its length
-    print "random:", tour, z, '  -->  ',
-    z = localsearch(tour, z, D)      # local search starting from the random tour
-    print tour, z
-    print
+    # # random construction
+    # print "random construction + local search:"
+    # tour = randtour(n)     # create a random tour
+    # z = length(tour, D)     # calculate its length
+    # print "random:", tour, z, '  -->  ',
+    # z = localsearch(tour, z, D)      # local search starting from the random tour
+    # print tour, z
+    # print
 
-    # greedy construction
-    print "greedy construction with nearest neighbor + local search:"
-    #for i in range(n):
-    for i in range(1):
-        tour = nearest_neighbor(n, i, D)     # create a greedy tour, visiting city 'i' first
-        z = length(tour, D)
-        print "nneigh:", tour, z, '  -->  ',
-        z = localsearch(tour, z, D)
-        print tour, z
-    print
+    # # greedy construction
+    # print "greedy construction with nearest neighbor + local search:"
+    # #for i in range(n):
+    # for i in range(1):
+    #     tour = nearest_neighbor(n, i, D)     # create a greedy tour, visiting city 'i' first
+    #     z = length(tour, D)
+    #     print "nneigh:", tour, z, '  -->  ',
+    #     z = localsearch(tour, z, D)
+    #     print tour, z
+    # print
 
     # multi-start local search
-    print "random start local search:"
+    #print "random start local search:"
     niter = 100
     tour,z = multistart_localsearch(niter, n, D, report_sol)
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     
-    print tour[0:len(tour)]
+    print tour
 
+    print "Calculating the final result............"
     res = uber((coord[0][0],coord[0][1]),(coord[0][0],coord[0][1]))
     for i in range(0, len(tour)-1):
-        print "----------------------"
+        #print "----------------------"
         
         #print tour[i]
         temp = uber((coord[tour[i]][0],coord[tour[i]][1]),(coord[tour[i+1]][0],coord[tour[i+1]][1]))
         
 
-        print "=====" + str(i)+str(i+1) + "====="
-        print (coord[tour[i]][0],coord[tour[i]][1])
-        print (coord[tour[i+1]][0],coord[tour[i+1]][1])
-        print temp
+        # print "=====" + str(i)+str(i+1) + "====="
+        # print (coord[tour[i]][0],coord[tour[i]][1])
+        # print (coord[tour[i+1]][0],coord[tour[i+1]][1])
+        # print temp
         res['total_duration'] += temp['total_duration']
         res['total_costs_by_cheapest_car_type'] += temp['total_costs_by_cheapest_car_type']
         res['total_distance'] += temp['total_distance']
         #{'name': 'Uber', 'total_duration': 15.0, 'duration_unit': 'minute', 'distance_unit': 'mile', 'total_costs_by_cheapest_car_type': 3.5, 'total_distance': 3.42, 'currency_code': '"USD"'}
     #res['currency_code'] = json.loads(res['currency_code'])
 
-    print "$$$$$$$$$$$"
-    print res
-
+    #print "$$$$$$$$$$$"
+    #print res
+    print "Finish calculating the final result"
     return (res, tour)

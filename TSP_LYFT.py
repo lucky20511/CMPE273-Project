@@ -10,30 +10,37 @@ def distL2((x1,y1), (x2,y2)):
 
     The two points are located on coordinates (x1,y1) and (x2,y2),
     sent as parameters"""
+    #print "x1="+str(x1)+" y1="+str(y1)+" x2="+str(x2)+" y2="+str(y2)
     ans = json.loads(lyft_function.given_cost([x1,y1],[x2,y2]))
+
     return ans['cost']
 def final_result(coord, tour_list):
+
+    print "Calculating the final result............"
     n = len(tour_list)
     total_costs_by_cheapest_car_type = 0
     total_duration = 0
     total_distance = 0
     result = {}
-    for i in range(0, n-1):
-        ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[i+1]]))
-        print "=====" + str(i)+str(i+1) + "====="
-        print (coord[tour_list[i]][0],coord[tour_list[i]][1])
-        print (coord[tour_list[i+1]][0],coord[tour_list[i+1]][1])
-        print ans
-        total_costs_by_cheapest_car_type += ans['cost']
-        total_duration += ans['duration']
-        total_distance += ans['distance']
-    result['total_costs_by_cheapest_car_type'] = total_costs_by_cheapest_car_type
-    result['total_duration'] = total_duration
-    result['total_distance'] = total_distance
     result['distance_unit'] = 'mile'
     result['duration_unit'] = 'minute'
     result['current_code'] = 'USD'
     result['name'] = 'Lyft'
+    result['total_costs_by_cheapest_car_type'] = 0
+    result['total_duration'] = 0
+    result['total_distance'] = 0
+
+    for i in range(0, n-1):
+        ans = json.loads(lyft_function.given_cost(coord[tour_list[i]],coord[tour_list[i+1]]))
+        #print "=====" + str(i)+str(i+1) + "====="
+        #print (coord[tour_list[i]][0],coord[tour_list[i]][1])
+        #print (coord[tour_list[i+1]][0],coord[tour_list[i+1]][1])
+        #print ans
+        result['total_costs_by_cheapest_car_type'] += ans['cost']
+        result['total_duration'] += ans['duration']
+        result['total_distance'] += ans['distance']
+
+    print "Finish calculating the final result"
     return result   
 
 def distL1((x1,y1), (x2,y2)):
@@ -70,7 +77,7 @@ def mk_matrix(coord, dist):
             else:
                 D[i,j] = dist((x1,y1), (x2,y2))
                 D[j,i] = D[i,j]
-                print "x1="+str(x1)+" y1="+str(y1)+" x2="+str(x2)+" y2="+str(y2) +" D="+str(D[i,j])
+                
 
             # if(i != 0 and j != n-1):
             #     D[j,i] = D[i,j]
@@ -139,11 +146,11 @@ def randtour(n):
     """Construct a random tour of size 'n'."""
     sol = range(1,n-1)      # set solution equal to [0,1,...,n-1]
     random.shuffle(sol) # place it in a random order
-    print sol
+    #print sol
     ls = [0]
 
 
-    print ls + sol + [n-1]
+    #print ls + sol + [n-1]
     return ls + sol + [n-1]
 
 
@@ -347,35 +354,36 @@ def run_lyft(input_coord):
               (clock(), obj, s)
 
 
-    print "*** travelling salesman problem ***"
-    print
+    #print "*** travelling salesman problem ***"
+    #print
 
-    # random construction
-    print "random construction + local search:"
-    tour = randtour(n)     # create a random tour
-    z = length(tour, D)     # calculate its length
-    print "random:", tour, z, '  -->  ',
-    z = localsearch(tour, z, D)      # local search starting from the random tour
-    print tour, z
-    print
+    # # random construction
+    # print "random construction + local search:"
+    # tour = randtour(n)     # create a random tour
+    # z = length(tour, D)     # calculate its length
+    # print "random:", tour, z, '  -->  ',
+    # z = localsearch(tour, z, D)      # local search starting from the random tour
+    # print tour, z
+    # print
 
-    # greedy construction
-    print "greedy construction with nearest neighbor + local search:"
-    #for i in range(n):
-    for i in range(1):
-        tour = nearest_neighbor(n, i, D)     # create a greedy tour, visiting city 'i' first
-        z = length(tour, D)
-        print "nneigh:", tour, z, '  -->  ',
-        z = localsearch(tour, z, D)
-        print tour, z
-    print
+    # # greedy construction
+    # print "greedy construction with nearest neighbor + local search:"
+    # #for i in range(n):
+    # for i in range(1):
+    #     tour = nearest_neighbor(n, i, D)     # create a greedy tour, visiting city 'i' first
+    #     z = length(tour, D)
+    #     print "nneigh:", tour, z, '  -->  ',
+    #     z = localsearch(tour, z, D)
+    #     print tour, z
+    # print
 
     # multi-start local search
-    print "random start local search:"
+    #print "random start local search:"
     niter = 100
     tour,z = multistart_localsearch(niter, n, D, report_sol)
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)
     print tour
 
+    
     return (final_result(coord, tour), tour)

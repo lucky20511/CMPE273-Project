@@ -5,6 +5,7 @@ import json
 from Lyft_key import *
 
 def given_cost(from_p, to_p):
+    print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     start = from_p
     end = to_p
     #print start, end
@@ -12,9 +13,9 @@ def given_cost(from_p, to_p):
     c = pycurl.Curl()
 #    url = 'https://api.lyft.com/v1/cost?start_lat='+str(37.77+start[0]/100.0)+'&start_lng='+str(-122.41+start[1]/100.0)+ '&end_lat=' + str(37.77+end[0]/100.0) + '&end_lng='+ str(-122.41+end[1]/100.0)
     url = 'https://api.lyft.com/v1/cost?start_lat='+str(start[0])+'&start_lng='+str(start[1])+ '&end_lat=' + str(end[0]) + '&end_lng='+ str(end[1])
-    print "QQQQQQQ"
-    print (start[0],start[1])
-    print (end[0],end[1])
+    #print "QQQQQQQ"
+    print ([start[0],start[1]],[end[0],end[1]])
+    #print (end[0],end[1])
     c.setopt(c.URL, url)
 
     #print get_new_lyft_key()
@@ -24,8 +25,9 @@ def given_cost(from_p, to_p):
     c.setopt(c.WRITEDATA, ans)
     c.perform()   
     result = json.loads(ans.getvalue())
-    print "XXXXXXXXXX"
-    print result
+    print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+    #print "XXXXXXXXXX"
+    #print result
     new_ans={}
     if 'error_description' in result.keys():
         #lyft out for sercvice, so set max float value to support run

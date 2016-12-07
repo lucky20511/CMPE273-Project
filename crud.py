@@ -116,7 +116,7 @@ def api_POST():
         
         google_ret = json.loads(r.text)
 
-        print r.text
+        #print r.text
 
         #print str(google_ret['results'][0]['geometry']['location']['lat']) +"\n";
         #print str(google_ret['results'][0]['geometry']['location']['lng']) +"\n";
@@ -139,17 +139,9 @@ def api_POST():
            
         dic_s = dic[len(dic)-1]
 
-
-
-        #print wrapUpJSON(dic_s)
-
-        #print "%f " %js['lat']
-        #print json.dumps(js)
        
         resp = Response(wrapUpJSON(dic_s), status=201, mimetype='application/json')
-        #print "post_response = %s" %resp
-        #resp = Response(js, status=201, mimetype='application/json')
-        #resp.headers['Message'] = '201 OK'
+
         return resp
 
 @app.route('/trips', methods = ['POST'])
@@ -179,10 +171,10 @@ def trip_POST():
         if len(start_coordinate) < 1: 
             abort(404) 
 
-        print "????????start"
-        for  i in range(0, len(start_coordinate)):
-            print start_coordinate[i]['lat']
-            print start_coordinate[i]['lng']    
+        # print "????????start"
+        # for  i in range(0, len(start_coordinate)):
+        #     print start_coordinate[i]['lat']
+        #     print start_coordinate[i]['lng']    
         
         #print start_coordinate
 
@@ -201,10 +193,10 @@ def trip_POST():
         if len(end_coordinate) < 1: 
             abort(404)    
 
-        print "????????end" 
-        for  i in range(0, len(end_coordinate)):
-            print end_coordinate[i]['lat']
-            print end_coordinate[i]['lng']
+        # print "????????end" 
+        # for  i in range(0, len(end_coordinate)):
+        #     print end_coordinate[i]['lat']
+        #     print end_coordinate[i]['lng']
 
 
            
@@ -233,10 +225,10 @@ def trip_POST():
         if len(mid_coordinate) < 1: 
             abort(404)
 
-        print "????????mid"   
-        for  i in range(0, len(mid_coordinate)):
-            print mid_coordinate[i]['lat']
-            print mid_coordinate[i]['lng']
+        # print "????????mid"   
+        # for  i in range(0, len(mid_coordinate)):
+        #     print mid_coordinate[i]['lat']
+        #     print mid_coordinate[i]['lng']
 
 
         #for i in range(0, )
@@ -247,9 +239,9 @@ def trip_POST():
             coord.append((mid_coordinate[i]['lat'], mid_coordinate[i]['lng']))    
         coord.append((end_coordinate[0]['lat'], end_coordinate[0]['lng'])) 
 
-        print "======"
+        print " === Input Coordinate === "
         print coord
-
+        print " ======================== "
         #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.100,-122.000),(37.999,-122.511)])
         #result_uber = run_uber([(37.770,-122.441),(37.781,-122.331),(37.791,-122.405),(37.999,-122.511)])
         (result_uber, uber_tour) = run_uber(coord)
@@ -257,13 +249,13 @@ def trip_POST():
         (result_lyft, lyft_tour) = run_lyft(coord)
         #start_place
         #end_place
-        print uber_tour
+        #print uber_tour
         uber_mid_array = []
         for i in range(1,len(uber_tour)-1):
             uber_mid_array.append(mid_place[i-1])
         Uber_best = {"UBER":{"start":start_place, "end":end_place, "mid":uber_mid_array}}    
 
-        print lyft_tour
+        #print lyft_tour
         lyft_mid_array = []
         for i in range(1,len(lyft_tour)-1):
             lyft_mid_array.append(mid_place[i-1])
@@ -281,8 +273,6 @@ def trip_POST():
         #print tour_uber
         #print "======tour_lyft======"
         #print tour_lyft
-
-
 
         resp = Response(json.dumps(js), status=201, mimetype='application/json')
 

@@ -17,6 +17,7 @@ import json
 def uber((start_x, start_y), (end_x, end_y)):
     session = Session(server_token='bMyGEqYLPAovFbljyM2GUK3zFHaiOPS1u2sT7-K0')
     client = UberRidesClient(session)
+    print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     response = client.get_price_estimates(
         start_latitude=start_x,
         start_longitude=start_y,
@@ -24,18 +25,20 @@ def uber((start_x, start_y), (end_x, end_y)):
         end_longitude=end_y,
         seat_count=1
     )
-    print "QQQQQQQ"
-    print (start_x, start_y)
-    print (end_x, end_y)
+    print ([start_x,start_y],[end_x,end_y])
+    print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+    #print "QQQQQQQ"
+    #print (start_x, start_y)
+    #print (end_x, end_y)
     
     estimate = response.json.get('prices')
-    print "XXXXXXXXXXX"
-    print estimate
+    #print "XXXXXXXXXXX"
+    #print estimate
 
     #cheap_uber = estimate[0];
     price_uber = (estimate[0]['high_estimate'] + estimate[0]['low_estimate']) / 2.0
     currency_uber = estimate[0]['currency_code'].encode('raw_unicode_escape')
-    duration_uber = estimate[0]['duration'] / 60.0
+    duration_uber = estimate[0]['duration'] / 60.00
     distance_uber = estimate[0]['distance']
 
 
