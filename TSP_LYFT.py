@@ -379,7 +379,7 @@ def run_lyft(input_coord):
 
     # multi-start local search
     #print "random start local search:"
-    niter = 100
+    niter = 30
     tour,z = multistart_localsearch(niter, n, D, report_sol)
     #assert z == length(tour, D)
     print "best found solution (%d iterations): z = %g" % (niter, z)

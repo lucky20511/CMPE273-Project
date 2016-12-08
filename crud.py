@@ -249,13 +249,13 @@ def trip_POST():
         (result_lyft, lyft_tour) = run_lyft(coord)
         #start_place
         #end_place
-        #print uber_tour
+        print uber_tour
         uber_mid_array = []
         for i in range(1,len(uber_tour)-1):
             uber_mid_array.append(mid_place[i-1])
         Uber_best = {"UBER":{"start":start_place, "end":end_place, "mid":uber_mid_array}}    
 
-        #print lyft_tour
+        print lyft_tour
         lyft_mid_array = []
         for i in range(1,len(lyft_tour)-1):
             lyft_mid_array.append(mid_place[i-1])

@@ -5,7 +5,7 @@ import json
 from Lyft_key import *
 
 def given_cost(from_p, to_p):
-    print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    print "-------- Lyft API Call --------"
     start = from_p
     end = to_p
     #print start, end
@@ -25,7 +25,7 @@ def given_cost(from_p, to_p):
     c.setopt(c.WRITEDATA, ans)
     c.perform()   
     result = json.loads(ans.getvalue())
-    print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+    print "-------- Lyft API End--------"
     #print "XXXXXXXXXX"
     #print result
     new_ans={}

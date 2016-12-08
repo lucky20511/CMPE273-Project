@@ -17,7 +17,7 @@ import json
 def uber((start_x, start_y), (end_x, end_y)):
     session = Session(server_token='bMyGEqYLPAovFbljyM2GUK3zFHaiOPS1u2sT7-K0')
     client = UberRidesClient(session)
-    print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    print "-------- Uber API Call --------"
     response = client.get_price_estimates(
         start_latitude=start_x,
         start_longitude=start_y,
@@ -26,8 +26,7 @@ def uber((start_x, start_y), (end_x, end_y)):
         seat_count=1
     )
     print ([start_x,start_y],[end_x,end_y])
-    print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
-    #print "QQQQQQQ"
+    print "-------- Uber API END  --------"    #print "QQQQQQQ"
     #print (start_x, start_y)
     #print (end_x, end_y)
     
